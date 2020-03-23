@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CalendarApplication.DAL.Repositorys;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,8 +21,10 @@ namespace CalendarApplication
     /// </summary>
     public partial class MainWindow : Window
     {
-        public MainWindow()
+        private readonly ICalendarRepository _calendarRepository;
+        public MainWindow(ICalendarRepository calendarRepository)
         {
+            _calendarRepository = calendarRepository;
             InitializeComponent();
         }
     }
