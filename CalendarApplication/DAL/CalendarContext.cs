@@ -2,7 +2,9 @@
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore.SqlServer;
 using System.Text;
+
 
 namespace CalendarApplication.DAL
 {
@@ -10,7 +12,9 @@ namespace CalendarApplication.DAL
     {
         public CalendarContext(DbContextOptions<CalendarContext> options) : base(options)
         {
+
         }
+       
         public DbSet<CalendarEntrie> calendarEntries { get; set; }
     }
 }
