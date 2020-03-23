@@ -69,21 +69,21 @@ namespace CalendarApplication.ViewModels
             if (calendar.SelectedDate.HasValue)
             {
                 DateTime date = calendar.SelectedDate.Value;
-                //calendarEntriesList = calendarEntriesList.Where(i => i.StartTime >= date && i.CreatedDate.Date <= DateY);
+                var list = AllCalendarEntries.Where(i => i.StartTime >= date && i.EndTime.Date <= date.AddDays(1)).ToList();
+                calendarEntriesList = new ObservableCollection<CalendarEntrie>(list);
+                lvCalendarList.ItemsSource = calendarEntriesList;
             }
         }
         private async void Delete_Entrie(object sender, RoutedEventArgs e)
         {
-            if (selected == null)
+            if (!ValidateSelected())
             {
-                ErrorView ev = new ErrorView("Nothing is Selected");
-                ev.Show();
                 return;
             }
             await _calendarRepository.RemoveEntrieAsync(selected);
             AllCalendarEntries.Remove(selected);
-            selected = null;
-            FillInfoField(AllCalendarEntries.FirstOrDefault());
+            selected = AllCalendarEntries.FirstOrDefault();
+            FillInfoField(selected);
             UpdateEntrieList();
         }
         private void Search(object sender, RoutedEventArgs e)
@@ -93,8 +93,7 @@ namespace CalendarApplication.ViewModels
 
             if(from == null || to == null)
             {
-                ErrorView ev = new ErrorView("Date is null");
-                ev.Show();
+                new ErrorView("Date is null").Show();
                 return;
             }
             var list = AllCalendarEntries.Where(i => i.StartTime >= from && i.EndTime <= to);
