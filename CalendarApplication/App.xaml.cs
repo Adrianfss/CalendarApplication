@@ -12,6 +12,7 @@ using System.Windows;
 using System.IO;
 using CalendarApplication.DAL.Repositorys;
 using Microsoft.Extensions.Hosting;
+using CalendarApplication.ViewModels;
 
 namespace CalendarApplication
 {
@@ -35,14 +36,14 @@ namespace CalendarApplication
             var connectionString = "Server=(localdb)\\mssqllocaldb;Database=CalendarDB;Trusted_Connection=True;MultipleActiveResultSets=true";
             services.AddDbContext<CalendarContext>(options => options.UseSqlServer(connectionString));
             services.AddTransient<ICalendarRepository, CalendarRepository>();
-            services.AddSingleton<MainWindow>();
+            services.AddSingleton<CalendarViewModel>();
         }
 
         protected override async void OnStartup(StartupEventArgs e)
         {
             await host.StartAsync();
 
-            var mainWindow = host.Services.GetRequiredService<MainWindow>();
+            var mainWindow = host.Services.GetRequiredService<CalendarViewModel>();
             mainWindow.Show();
 
             base.OnStartup(e);

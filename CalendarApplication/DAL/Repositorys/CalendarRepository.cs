@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace CalendarApplication.DAL.Repositorys
@@ -19,6 +20,10 @@ namespace CalendarApplication.DAL.Repositorys
         public async Task<IEnumerable<CalendarEntrie>> GetCalendarEntriesAsync()
         {
             return await _dbContext.calendarEntries.ToListAsync();
+        }
+        public IEnumerable<CalendarEntrie> GetCalendarEntries()
+        {
+            return _dbContext.calendarEntries.ToList();
         }
 
         public async Task AddEntrieAsync(CalendarEntrie entrie)
