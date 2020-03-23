@@ -5,29 +5,35 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CalendarApplication.ViewModels"
         mc:Ignorable="d"
-        Title="CalendarViewModel" Height="450" Width="800">
+        Title="CalendarViewModel" Height="500" Width="800">
     <Grid>
-        <Grid.RowDefinitions>
-        </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="173*"/>
-            <ColumnDefinition Width="252*"/>
+            <ColumnDefinition Width="297*"/>
+            <ColumnDefinition Width="503*"/>
         </Grid.ColumnDefinitions>
-        <Viewbox Margin="0,0,0,250">
-            <Calendar/>
-        </Viewbox>
-        <DatePicker HorizontalAlignment="Left" Margin="34,2,0,0" VerticalAlignment="Top" Grid.Column="1" Height="24" Width="102"/>
-        <Label Content="Fra:" HorizontalAlignment="Left" Margin="4,0,0,0" VerticalAlignment="Top" Grid.Column="1" Height="26" Width="29"/>
-        <DatePicker HorizontalAlignment="Left" Margin="170,4,0,0" VerticalAlignment="Top" Grid.Column="1" Height="24" Width="102"/>
-        <Label Content="Til:" HorizontalAlignment="Left" Margin="136,2,0,0" VerticalAlignment="Top" Grid.Column="1" Height="26" Width="25"/>
-        <Button Content="Søk" Grid.Column="1" HorizontalAlignment="Left" Margin="276,6,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.534,0.403" Height="20" Width="23"/>
-        <Button Content="Vis Alt" Grid.Column="1" HorizontalAlignment="Left" Margin="331,6,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.534,0.403" Height="20" Width="37"/>
-        <ListView Margin="0,33,0,66" Name="lvCalendarList" Grid.Column="1">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="58*"/>
+            <RowDefinition Height="103*"/>
+            <RowDefinition Height="181*"/>
+            <RowDefinition Height="98*"/>
+            <RowDefinition Height="44*"/>
+        </Grid.RowDefinitions>
+        <Button Content="Edit entrie" Grid.Row="4" Margin="149,1,0,0" Click="Edit_Entrie" />
+        <Button Content="Delete" Background="OrangeRed"  Grid.Row="4" Margin="0,1,148,0" Click="Delete_Entrie"/>
+        <Button Content="Add entrie " Background="ForestGreen" Grid.Column="1" Grid.Row="4" Click="Add_Entrie" Margin="0,1,0,0"/>
+        <Calendar Grid.RowSpan="2"/>
+        <Label Content="From:" Grid.Column="1" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Center" Height="26" Width="40"/>
+        <DatePicker Grid.Column="1" HorizontalAlignment="Left" Margin="72,0,0,0" VerticalAlignment="Center" Height="24" Width="102"/>
+        <Label Content="To:" Grid.Column="1" HorizontalAlignment="Left" Margin="179,0,0,0" VerticalAlignment="Center" Height="26" Width="25"/>
+        <DatePicker Grid.Column="1" HorizontalAlignment="Left" Margin="209,0,0,0" VerticalAlignment="Center" Height="24" Width="102"/>
+        <Button Content="Search" Grid.Column="1" HorizontalAlignment="Left" Margin="331,0,0,0" VerticalAlignment="Center" Height="20" Width="39"/>
+        <Button Content="Show all" Grid.Column="1" HorizontalAlignment="Left" Margin="445,0,0,0" VerticalAlignment="Center" Height="20" Width="48"/>
+        <ListView Name="lvCalendarList" Grid.Column="1" Margin="0,52,0,0" Grid.RowSpan="4">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="Title" Width="120" DisplayMemberBinding="{Binding Title}" />
-                    <GridViewColumn Header="StartTime" Width="150" DisplayMemberBinding="{Binding StartTime}" />
-                    <GridViewColumn Header="StartTime" Width="150" DisplayMemberBinding="{Binding EndTime}" />
+                    <GridViewColumn Header="Title" Width="100" DisplayMemberBinding="{Binding Title}" />
+                    <GridViewColumn Header="StartTime" Width="200" DisplayMemberBinding="{Binding StartTime}" />
+                    <GridViewColumn Header="StartTime" Width="200" DisplayMemberBinding="{Binding EndTime}" />
                 </GridView>
             </ListView.View>
             <ListView.ItemContainerStyle>
@@ -36,11 +42,12 @@
                 </Style>
             </ListView.ItemContainerStyle>
         </ListView>
-        <Label Name="lblTitle" HorizontalAlignment="Left" Margin="10,234,0,0" VerticalAlignment="Top"/>
-        <Label Name="lblDescription" HorizontalAlignment="Left" Margin="65,358,0,0" VerticalAlignment="Top"/>
-        <Label Name="lblStartTime" HorizontalAlignment="Left" Margin="12,265,0,0" VerticalAlignment="Top"/>
-        <Label Name="lblEndTime" HorizontalAlignment="Left" Margin="12,291,0,0" VerticalAlignment="Top"/>
-        <Button Content="Add entrie" Grid.Column="1" HorizontalAlignment="Left" Margin="221,392,0,0" VerticalAlignment="Top" Click="Add_Entrie"/>
-        <Button Content="Edit entrie" HorizontalAlignment="Left" Margin="123,392,0,0" VerticalAlignment="Top" Click="Edit_Entrie"/>
+        <Label Name="lblTitle" Content="" HorizontalAlignment="Left" Margin="93,6,0,0" Grid.Row="2" VerticalAlignment="Top" Height="30" Width="76"/>
+        <Label Content="StartTime" HorizontalAlignment="Left" Margin="10,41,0,0" Grid.Row="2" VerticalAlignment="Top" Height="30" Width="104"/>
+        <Label Name="lblStartTime" Content="" HorizontalAlignment="Left" Margin="119,41,0,0" Grid.Row="2" VerticalAlignment="Top"/>
+        <Label Content="EndTime" HorizontalAlignment="Left" Grid.Row="2" VerticalAlignment="Top" Height="31" Width="97" Margin="10,88,0,0"/>
+        <Label Name="lblEndTime" Content="" HorizontalAlignment="Left" Margin="119,88,0,0" Grid.Row="2" VerticalAlignment="Top" />
+        <TextBlock  Name="tbDescription" Grid.Row="3" Text="" TextWrapping="Wrap"/>
+        <Label Content="Description" HorizontalAlignment="Left" Margin="10,141,0,0" Grid.Row="2" VerticalAlignment="Top" Height="30" Width="121"/>
     </Grid>
 </Window>

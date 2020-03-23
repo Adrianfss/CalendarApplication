@@ -21,7 +21,7 @@ namespace CalendarApplication.ViewModels
     /// </summary>
     public partial class EditCalendarViewModel : Window
     {
-        private IOnChangeCallback _onChangeCallback;
+        private readonly IOnChangeCallback _onChangeCallback;
         public EditCalendarViewModel(CalendarEntrie entrie, IOnChangeCallback onChangeCallback)
         {
             _onChangeCallback = onChangeCallback;
@@ -31,11 +31,7 @@ namespace CalendarApplication.ViewModels
 
         private void Save_Entrie(object sender, RoutedEventArgs e)
         {
-           // DpEndTime.GetBindingExpression(DatePicker.DataContextProperty).UpdateSource();
-            //DpStartTime.GetBindingExpression(DatePicker.DataContextProperty).UpdateSource();
-             //TbTitle.GetBindingExpression(TextBox.TextProperty).UpdateSource();
-            BindingExpression binding = RtbDescription.GetBindingExpression(TextBox.TextProperty);
-            binding.UpdateSource();
+            _onChangeCallback.OnChange((CalendarEntrie)DataContext);
             Close();
         }
         private void Cancel_Click(object sender, RoutedEventArgs e)

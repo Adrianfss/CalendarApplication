@@ -8,6 +8,8 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Threading.Tasks;
+using System;
+using CalendarApplication.Views;
 
 namespace CalendarApplication.ViewModels
 {
@@ -18,16 +20,16 @@ namespace CalendarApplication.ViewModels
     {
         private CalendarEntrie selected;
         private readonly ICalendarRepository _calendarRepository;
-        private ObservableCollection<CalendarEntrie> calendarEntries;
-        private readonly List<CalendarEntrie> calendarEntriesList;
+        private ObservableCollection<CalendarEntrie> calendarEntriesList;
+        private List<CalendarEntrie> AllCalendarEntries;
 
         public CalendarViewModel(ICalendarRepository calendarRepository)
         {
             _calendarRepository = calendarRepository;
-            calendarEntriesList = _calendarRepository.GetCalendarEntries().ToList();
+            AllCalendarEntries = _calendarRepository.GetCalendarEntries().ToList();
             InitializeComponent();
-            calendarEntries = new ObservableCollection<CalendarEntrie>(calendarEntriesList);
-            lvCalendarList.ItemsSource = calendarEntries;
+            UpdateEntrieList();
+            lvCalendarList.ItemsSource = calendarEntriesList;
         }
 
         private void CalenderListClick(object sender, MouseButtonEventArgs e)
@@ -36,11 +38,7 @@ namespace CalendarApplication.ViewModels
             if (item != null && item.IsSelected)
             {
                 selected = (CalendarEntrie)item.Content;
-
-                lblTitle.Content = selected.Title;
-                lblDescription.Content = selected.Description;
-                lblStartTime.Content = selected.StartTime.ToLongDateString();
-                lblEndTime.Content = selected.EndTime.ToLongTimeString();
+                FellInfoText(selected);
             }
         }
 
@@ -54,17 +52,41 @@ namespace CalendarApplication.ViewModels
             EditCalendarViewModel createCalendarViewModel = new EditCalendarViewModel(selected,this);
             createCalendarViewModel.Show();
         }
+        private void Delete_Entrie(object sender, RoutedEventArgs e)
+        {
+            if(selected == null)
+            {
+                ErrorView ev = new ErrorView("Nothing is Selected");
+                ev.Show();
+                return;
+            }
+            _calendarRepository.RemoveEntrieAsync(selected);
+        }
 
         public async Task OnChange(CalendarEntrie calendarEntrie)
         {
             var returnValue = await _calendarRepository.UpdateEntrieAsync(calendarEntrie);
+           // AllCalendarEntries.up = returnValue;
         }
 
         public async Task OnCreate(CalendarEntrie calendarEntrie)
         {
             var returnValue = await _calendarRepository.AddEntrieAsync(calendarEntrie);
-            calendarEntries.Add(returnValue);
+            AllCalendarEntries.Add(returnValue);
             calendarEntriesList.Add(returnValue);
+        }
+
+        private void UpdateEntrieList()
+        {
+            calendarEntriesList = new ObservableCollection<CalendarEntrie>(AllCalendarEntries);
+        }
+        private void FellInfoText(CalendarEntrie entrie)
+        {
+
+            lblTitle.Content = entrie.Title;
+            tbDescription.Text = entrie.Description;
+            lblStartTime.Content = entrie.StartTime.ToLongDateString();
+            lblEndTime.Content = entrie.EndTime.ToLongDateString();
         }
     }
 }
