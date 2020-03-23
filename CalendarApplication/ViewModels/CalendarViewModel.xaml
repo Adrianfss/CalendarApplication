@@ -21,13 +21,13 @@
         <Button Content="Edit entrie" Grid.Row="4" Margin="149,1,0,0" Click="Edit_Entrie" />
         <Button Content="Delete" Background="OrangeRed"  Grid.Row="4" Margin="0,1,148,0" Click="Delete_Entrie"/>
         <Button Content="Add entrie " Background="ForestGreen" Grid.Column="1" Grid.Row="4" Click="Add_Entrie" Margin="0,1,0,0"/>
-        <Calendar Grid.RowSpan="2"/>
+        <Calendar Grid.RowSpan="2" SelectedDatesChanged="Calendar_SelectedDatesChanged"/>
         <Label Content="From:" Grid.Column="1" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Center" Height="26" Width="40"/>
-        <DatePicker Grid.Column="1" HorizontalAlignment="Left" Margin="72,0,0,0" VerticalAlignment="Center" Height="24" Width="102"/>
+        <DatePicker Name="dpFrom" Grid.Column="1" HorizontalAlignment="Left" Margin="72,0,0,0" VerticalAlignment="Center" Height="24" Width="102"/>
         <Label Content="To:" Grid.Column="1" HorizontalAlignment="Left" Margin="179,0,0,0" VerticalAlignment="Center" Height="26" Width="25"/>
-        <DatePicker Grid.Column="1" HorizontalAlignment="Left" Margin="209,0,0,0" VerticalAlignment="Center" Height="24" Width="102"/>
-        <Button Content="Search" Grid.Column="1" HorizontalAlignment="Left" Margin="331,0,0,0" VerticalAlignment="Center" Height="20" Width="39"/>
-        <Button Content="Show all" Grid.Column="1" HorizontalAlignment="Left" Margin="445,0,0,0" VerticalAlignment="Center" Height="20" Width="48"/>
+        <DatePicker  Name="dpTo" Grid.Column="1" HorizontalAlignment="Left" Margin="209,0,0,0" VerticalAlignment="Center" Height="24" Width="102"/>
+        <Button Content="Search" Grid.Column="1" HorizontalAlignment="Left" Margin="331,0,0,0" Click="Search" VerticalAlignment="Center" Height="20" Width="39"/>
+        <Button Content="Show all" Grid.Column="1" HorizontalAlignment="Left" Margin="445,0,0,0" VerticalAlignment="Center" Height="20" Width="48" Click="Refresh"/>
         <ListView Name="lvCalendarList" Grid.Column="1" Margin="0,52,0,0" Grid.RowSpan="4">
             <ListView.View>
                 <GridView>

@@ -29,7 +29,8 @@ namespace CalendarApplication.ViewModels
             AllCalendarEntries = _calendarRepository.GetCalendarEntries().ToList();
             InitializeComponent();
             UpdateEntrieList();
-            lvCalendarList.ItemsSource = calendarEntriesList;
+            selected = AllCalendarEntries.FirstOrDefault();
+            FillInfoField(selected);
         }
 
         private void CalenderListClick(object sender, MouseButtonEventArgs e)
@@ -38,7 +39,7 @@ namespace CalendarApplication.ViewModels
             if (item != null && item.IsSelected)
             {
                 selected = (CalendarEntrie)item.Content;
-                FellInfoText(selected);
+                FillInfoField(selected);
             }
         }
 
@@ -49,44 +50,102 @@ namespace CalendarApplication.ViewModels
         }
         private void Edit_Entrie(object sender, RoutedEventArgs e)
         {
+            if(!ValidateSelected())
+            {
+                return;
+            }
             EditCalendarViewModel createCalendarViewModel = new EditCalendarViewModel(selected,this);
             createCalendarViewModel.Show();
         }
-        private void Delete_Entrie(object sender, RoutedEventArgs e)
+
+
+
+        private void Calendar_SelectedDatesChanged(object sender,
+        SelectionChangedEventArgs e)
         {
-            if(selected == null)
+            var calendar = sender as Calendar;
+
+            // ... See if a date is selected.
+            if (calendar.SelectedDate.HasValue)
+            {
+                DateTime date = calendar.SelectedDate.Value;
+                //calendarEntriesList = calendarEntriesList.Where(i => i.StartTime >= date && i.CreatedDate.Date <= DateY);
+            }
+        }
+        private async void Delete_Entrie(object sender, RoutedEventArgs e)
+        {
+            if (selected == null)
             {
                 ErrorView ev = new ErrorView("Nothing is Selected");
                 ev.Show();
                 return;
             }
-            _calendarRepository.RemoveEntrieAsync(selected);
+            await _calendarRepository.RemoveEntrieAsync(selected);
+            AllCalendarEntries.Remove(selected);
+            selected = null;
+            FillInfoField(AllCalendarEntries.FirstOrDefault());
+            UpdateEntrieList();
+        }
+        private void Search(object sender, RoutedEventArgs e)
+        {
+            DateTime? from = dpFrom.SelectedDate;
+            DateTime? to = dpTo.SelectedDate;
+
+            if(from == null || to == null)
+            {
+                ErrorView ev = new ErrorView("Date is null");
+                ev.Show();
+                return;
+            }
+            var list = AllCalendarEntries.Where(i => i.StartTime >= from && i.EndTime <= to);
+            calendarEntriesList = new ObservableCollection<CalendarEntrie>(list);
+            lvCalendarList.ItemsSource = calendarEntriesList;
         }
 
         public async Task OnChange(CalendarEntrie calendarEntrie)
         {
             var returnValue = await _calendarRepository.UpdateEntrieAsync(calendarEntrie);
-           // AllCalendarEntries.up = returnValue;
-        }
+            var oldValue = AllCalendarEntries.FirstOrDefault(x => x.Id == calendarEntrie.Id);
+            if (oldValue != null) oldValue = returnValue;
 
+            UpdateEntrieList();
+        }
         public async Task OnCreate(CalendarEntrie calendarEntrie)
         {
             var returnValue = await _calendarRepository.AddEntrieAsync(calendarEntrie);
             AllCalendarEntries.Add(returnValue);
-            calendarEntriesList.Add(returnValue);
+            UpdateEntrieList();
         }
 
         private void UpdateEntrieList()
         {
             calendarEntriesList = new ObservableCollection<CalendarEntrie>(AllCalendarEntries);
+            lvCalendarList.ItemsSource = calendarEntriesList;
         }
-        private void FellInfoText(CalendarEntrie entrie)
+        private void FillInfoField(CalendarEntrie entrie)
         {
+            if (entrie == null) return;
 
             lblTitle.Content = entrie.Title;
             tbDescription.Text = entrie.Description;
             lblStartTime.Content = entrie.StartTime.ToLongDateString();
             lblEndTime.Content = entrie.EndTime.ToLongDateString();
+        }
+
+        private async void Refresh(object sender, RoutedEventArgs e)
+        {
+            AllCalendarEntries = (await _calendarRepository.GetCalendarEntriesAsync()).ToList();
+            UpdateEntrieList();
+        }
+        private bool ValidateSelected()
+        {
+            if(selected == null)
+            {
+                new ErrorView("Nothing is Selected").Show();
+                return false;
+            }
+
+           return true;
         }
     }
 }
