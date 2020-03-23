@@ -41,5 +41,6 @@
         <Label Name="lblStartTime" HorizontalAlignment="Left" Margin="12,265,0,0" VerticalAlignment="Top"/>
         <Label Name="lblEndTime" HorizontalAlignment="Left" Margin="12,291,0,0" VerticalAlignment="Top"/>
         <Button Content="Add entrie" Grid.Column="1" HorizontalAlignment="Left" Margin="221,392,0,0" VerticalAlignment="Top" Click="Add_Entrie"/>
+        <Button Content="Edit entrie" HorizontalAlignment="Left" Margin="123,392,0,0" VerticalAlignment="Top" Click="Edit_Entrie"/>
     </Grid>
 </Window>

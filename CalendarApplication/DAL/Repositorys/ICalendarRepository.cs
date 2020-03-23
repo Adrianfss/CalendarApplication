@@ -10,8 +10,8 @@ namespace CalendarApplication.DAL.Repositorys
     {
         Task<IEnumerable<CalendarEntrie>> GetCalendarEntriesAsync();
         IEnumerable<CalendarEntrie> GetCalendarEntries();
-        Task AddEntrieAsync(CalendarEntrie entrie);
+        Task<CalendarEntrie> AddEntrieAsync(CalendarEntrie entrie);
         Task RemoveEntrieAsync(CalendarEntrie entrie);
-        Task UpdateEntrie(CalendarEntrie entrie);
+        Task<CalendarEntrie> UpdateEntrieAsync(CalendarEntrie entrie);
     }
 }

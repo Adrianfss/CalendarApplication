@@ -26,10 +26,11 @@ namespace CalendarApplication.DAL.Repositorys
             return _dbContext.calendarEntries.ToList();
         }
 
-        public async Task AddEntrieAsync(CalendarEntrie entrie)
+        public async Task<CalendarEntrie> AddEntrieAsync(CalendarEntrie entrie)
         {
-            await _dbContext.calendarEntries.AddAsync(entrie);
+            var entityEntry = await _dbContext.calendarEntries.AddAsync(entrie);
             await _dbContext.SaveChangesAsync();
+            return entityEntry.Entity;
         }
 
         public async Task RemoveEntrieAsync(CalendarEntrie entrie)
@@ -38,10 +39,11 @@ namespace CalendarApplication.DAL.Repositorys
             await _dbContext.SaveChangesAsync();
         }
 
-        public async Task UpdateEntrie(CalendarEntrie entrie)
+        public async Task<CalendarEntrie> UpdateEntrieAsync(CalendarEntrie entrie)
         {
-            _dbContext.Remove(entrie);
+            var entityEntry = _dbContext.Update(entrie);
             await _dbContext.SaveChangesAsync();
+            return entityEntry.Entity;
         }
     }
 }

@@ -1,18 +1,20 @@
 ﻿using CalendarApplication.DAL.Repositorys;
 using CalendarApplication.Models;
+using CalendarApplication.CallbackInterface;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Threading.Tasks;
 
 namespace CalendarApplication.ViewModels
 {
     /// <summary>
     /// Interaction logic for CalendarViewModel.xaml
     /// </summary>
-    public partial class CalendarViewModel : Window
+    public partial class CalendarViewModel : Window, IOnChangeCallback, IOnCreateCallback
     {
         private CalendarEntrie selected;
         private readonly ICalendarRepository _calendarRepository;
@@ -44,8 +46,25 @@ namespace CalendarApplication.ViewModels
 
         private void Add_Entrie(object sender, RoutedEventArgs e)
         {
-            CreateCalendarViewModel createCalendarViewModel = new CreateCalendarViewModel();
+            CreateCalendarViewModel createCalendarViewModel = new CreateCalendarViewModel(this);
             createCalendarViewModel.Show();
+        }
+        private void Edit_Entrie(object sender, RoutedEventArgs e)
+        {
+            EditCalendarViewModel createCalendarViewModel = new EditCalendarViewModel(selected,this);
+            createCalendarViewModel.Show();
+        }
+
+        public async Task OnChange(CalendarEntrie calendarEntrie)
+        {
+            var returnValue = await _calendarRepository.UpdateEntrieAsync(calendarEntrie);
+        }
+
+        public async Task OnCreate(CalendarEntrie calendarEntrie)
+        {
+            var returnValue = await _calendarRepository.AddEntrieAsync(calendarEntrie);
+            calendarEntries.Add(returnValue);
+            calendarEntriesList.Add(returnValue);
         }
     }
 }
