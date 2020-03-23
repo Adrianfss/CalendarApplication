@@ -1,0 +1,41 @@
+﻿<Window x:Class="CalendarApplication.Views.CalendarView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CalendarApplication.Views"
+        mc:Ignorable="d"
+        Title="CalendarView" Height="500" Width="800">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="297*"/>
+            <ColumnDefinition Width="503*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="58*"/>
+            <RowDefinition Height="103*"/>
+            <RowDefinition Height="181*"/>
+            <RowDefinition Height="98*"/>
+            <RowDefinition Height="44*"/>
+        </Grid.RowDefinitions>
+        <Button x:Name="EditEntrie" Content="Edit entrie" Grid.Row="4" Margin="149,1,0,0" />
+        <Button x:Name="DeleteEntrie" Content="Delete" Background="OrangeRed"  Grid.Row="4" Margin="0,1,148,0"/>
+        <Button x:Name="AddEntrie" Content="Add entrie " Background="ForestGreen" Grid.Column="1" Grid.Row="4" Margin="0,1,0,0"/>
+        <Calendar Grid.RowSpan="2"/>
+        <Label Content="From:" Grid.Column="1" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Center" Height="26" Width="40"/>
+        <DatePicker Name="dpFrom" Grid.Column="1" HorizontalAlignment="Left" Margin="72,0,0,0" VerticalAlignment="Center" Height="24" Width="102"/>
+        <Label Content="To:" Grid.Column="1" HorizontalAlignment="Left" Margin="179,0,0,0" VerticalAlignment="Center" Height="26" Width="25"/>
+        <DatePicker  Name="dpTo" Grid.Column="1" HorizontalAlignment="Left" Margin="209,0,0,0" VerticalAlignment="Center" Height="24" Width="102"/>
+        <Button x:Name="Search" Content="Search" Grid.Column="1" HorizontalAlignment="Left" Margin="331,0,0,0" VerticalAlignment="Center" Height="20" Width="39"/>
+        <Button x:Name="ShowAll" Content="Show all" Grid.Column="1" HorizontalAlignment="Left" Margin="445,0,0,0" VerticalAlignment="Center" Height="20" Width="48" />
+        
+        <Label Name="lblTitle" Content="{Binding SelectedEntrie.Title}" HorizontalAlignment="Left" Margin="93,6,0,0" Grid.Row="2" VerticalAlignment="Top" Height="30" Width="76"/>
+        <Label Content="StartTime" HorizontalAlignment="Left" Margin="10,41,0,0" Grid.Row="2" VerticalAlignment="Top" Height="30" Width="104"/>
+        <Label Name="lblStartTime" Content="{Binding SelectedEntrie.StartTime}" HorizontalAlignment="Left" Margin="119,41,0,0" Grid.Row="2" VerticalAlignment="Top"/>
+        <Label Content="EndTime" HorizontalAlignment="Left" Grid.Row="2" VerticalAlignment="Top" Height="31" Width="97" Margin="10,88,0,0"/>
+        <Label Name="lblEndTime" Content="{Binding SelectedEntrie.EndTime}" HorizontalAlignment="Left" Margin="119,88,0,0" Grid.Row="2" VerticalAlignment="Top" />
+        <TextBlock  Name="tbDescription" Grid.Row="3" Text="{Binding SelectedEntrie.Description}" TextWrapping="Wrap"/>
+        <Label Content="Description" HorizontalAlignment="Left" Margin="10,141,0,0" Grid.Row="2" VerticalAlignment="Top" Height="30" Width="121"/>
+    </Grid>
+</Window>
