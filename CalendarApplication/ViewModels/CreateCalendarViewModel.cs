@@ -7,6 +7,10 @@ using System.Text;
 
 namespace CalendarApplication.ViewModels
 {
+    /// <summary>
+    /// window for creating new CalenderEntries
+    /// uses OnCreatedCallBack for callback to mainWindow
+    /// </summary>
     class CreateCalendarViewModel : Screen
     {
         IOnCreateCallback _onCreateCallBack;

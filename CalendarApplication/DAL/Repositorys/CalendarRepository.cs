@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace CalendarApplication.DAL.Repositorys
 {
+    /// <summary>
+    /// Basic Repository for CalendarDatabase
+    /// </summary>
     public class CalendarRepository : ICalendarRepository
     {
         private readonly CalendarContext _dbContext;
@@ -19,11 +22,11 @@ namespace CalendarApplication.DAL.Repositorys
 
         public async Task<IEnumerable<CalendarEntrie>> GetCalendarEntriesAsync()
         {
-            return await _dbContext.calendarEntries.ToListAsync();
+            return (await _dbContext.calendarEntries.ToListAsync()).OrderBy(x => x.StartTime);
         }
         public IEnumerable<CalendarEntrie> GetCalendarEntries()
         {
-            return _dbContext.calendarEntries.ToList();
+            return _dbContext.calendarEntries.ToList().OrderBy(x => x.StartTime);
         }
 
         public async Task<CalendarEntrie> AddEntrieAsync(CalendarEntrie entrie)

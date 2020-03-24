@@ -9,6 +9,10 @@ using System.Threading.Tasks;
 
 namespace CalendarApplication.ViewModels
 {
+    /// <summary>
+    /// Main Window for this application IwindowManager and ICalendarRepository 
+    /// is Injected in the bootstrap class
+    /// </summary>
     public class CalendarViewModel : Screen, IOnChangeCallback, IOnCreateCallback
     {
         private readonly IWindowManager _windowManager;
@@ -60,7 +64,9 @@ namespace CalendarApplication.ViewModels
                 _endTime = value;
             }
         }
-
+        /// <summary>
+        /// uses calendarRepository for getting the newest list from server
+        /// </summary>
         public async void ShowAll()
         {
             CalendarEntries.Clear();
@@ -68,6 +74,9 @@ namespace CalendarApplication.ViewModels
             CalendarEntries.AddRange(_fullEntrieList);
             NotifyOfPropertyChange(() => CalendarEntries);
         }
+        /// <summary>
+        /// Search for CalendarEntrie within StartTime and EndTime
+        /// </summary>
         public void Search()
         {
             var list = _fullEntrieList.Where(i => i.StartTime >= StartTime && i.EndTime <= EndTime.AddDays(1));
@@ -78,7 +87,7 @@ namespace CalendarApplication.ViewModels
         {
             if (SelectedEntrie == null) return;
 
-            _windowManager.ShowWindow(new EditCalendarViewModel(SelectedEntrie, this), null, null);
+            _windowManager.ShowWindow(new EditCalendarViewModel (entrie: SelectedEntrie,windowManager:_windowManager, callback:this), null, null);
         }
 
         public async Task DeleteEntrieAsync()
@@ -87,13 +96,16 @@ namespace CalendarApplication.ViewModels
 
             await _calendarRepository.RemoveEntrieAsync(SelectedEntrie);
             CalendarEntries.Remove(SelectedEntrie);
+            SelectedEntrie = CalendarEntries.FirstOrDefault();
         }
 
         public void AddEntrie()
         {
             _windowManager.ShowWindow(new CreateCalendarViewModel(windowManager: _windowManager,onCreateCallback :this), null, null);
         }
-
+        /// <summary>
+        /// implementing of callbackInterfaces
+        /// </summary>
         public async Task OnCreateAsync(CalendarEntrie calendarEntrie)
         {
             var item = await _calendarRepository.AddEntrieAsync(calendarEntrie);
@@ -108,10 +120,6 @@ namespace CalendarApplication.ViewModels
             if (oldValue != null) oldValue = item;
 
             NotifyOfPropertyChange(() => CalendarEntries);
-        }
-
-        public void Test()
-        {
         }
     }
 }

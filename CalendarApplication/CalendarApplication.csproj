@@ -11,9 +11,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="appsettings.json">
+    <EmbeddedResource Include="appsettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
+    </EmbeddedResource>
   </ItemGroup>
 
   <ItemGroup>
@@ -25,6 +25,7 @@
     <PackageReference Include="Caliburn.Micro.Core" Version="3.2.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.2" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
   </ItemGroup>
 
 </Project>
