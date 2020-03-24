@@ -10,10 +10,13 @@ namespace CalendarApplication.ViewModels
     class CreateCalendarViewModel : Screen
     {
         IOnCreateCallback _onCreateCallBack;
+        IWindowManager _windowManager;
+
         private CalendarEntrie _selectedEntrie;
-        public CreateCalendarViewModel(IOnCreateCallback onCreateCallback) 
+        public CreateCalendarViewModel(IWindowManager windowManager,IOnCreateCallback onCreateCallback) 
         {
             _onCreateCallBack = onCreateCallback;
+            _windowManager = windowManager;
             SelectedEntrie = new CalendarEntrie { StartTime = DateTime.Now, EndTime = DateTime.Now};
         }
         public CalendarEntrie SelectedEntrie
@@ -25,11 +28,14 @@ namespace CalendarApplication.ViewModels
                 NotifyOfPropertyChange(() => SelectedEntrie);
             }
         }
-        public bool CanSave() => SelectedEntrie.EndTime != null && SelectedEntrie.StartTime != null;  
-
         public void Save()
         {
-            _onCreateCallBack.OnCreate(SelectedEntrie);
+            if(String.IsNullOrEmpty(SelectedEntrie.Description) || String.IsNullOrEmpty(SelectedEntrie.Title))
+            {
+                _windowManager.ShowWindow(new ErrorViewModel("Description or Title is Empty"), null, null);
+                return;
+            }
+            _onCreateCallBack.OnCreateAsync(SelectedEntrie);
             CloseWindow();
         }
         public void CloseWindow()

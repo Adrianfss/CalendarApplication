@@ -1,85 +1,117 @@
-﻿using CalendarApplication.DAL.Repositorys;
+﻿using CalendarApplication.CallbackInterface;
+using CalendarApplication.DAL.Repositorys;
 using CalendarApplication.Models;
-using CalendarApplication.Views;
-using System.Linq;
 using Caliburn.Micro;
-using CalendarApplication.CallbackInterface;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace CalendarApplication.ViewModels
 {
-    internal class CalendarViewModel :Screen, IOnChangeCallback, IOnCreateCallback
+    public class CalendarViewModel : Screen, IOnChangeCallback, IOnCreateCallback
     {
         private readonly IWindowManager _windowManager;
+        private List<CalendarEntrie> _fullEntrieList;
         private readonly ICalendarRepository _calendarRepository;
         private BindableCollection<CalendarEntrie> _calendarEntries = new BindableCollection<CalendarEntrie>();
         private CalendarEntrie _selectedEntrie;
+        private DateTime _startTime = DateTime.Now;
+        private DateTime _endTime = DateTime.Now;
 
         public CalendarViewModel(ICalendarRepository calendarRepository, IWindowManager windowManager)
         {
             _calendarRepository = calendarRepository;
             _windowManager = windowManager;
-            CalendarEntries.AddRange(_calendarRepository.GetCalendarEntries());
+            _fullEntrieList = _calendarRepository.GetCalendarEntries().ToList();
+            CalendarEntries.AddRange(_fullEntrieList);
             SelectedEntrie = _calendarEntries.FirstOrDefault();
         }
 
-
         public BindableCollection<CalendarEntrie> CalendarEntries
         {
-            get {  return _calendarEntries;}
-            set { _calendarEntries = value;}
+            get { return _calendarEntries; }
+            set { _calendarEntries = value; }
         }
+
         public CalendarEntrie SelectedEntrie
         {
-            get{ return _selectedEntrie; }
+            get { return _selectedEntrie; }
             set
-            { 
+            {
                 _selectedEntrie = value;
+                NotifyOfPropertyChange(() => SelectedEntrie);
             }
         }
-        public void ShowAll()
+
+        public DateTime StartTime
         {
-            CalendarEntries.AddRange(_calendarRepository.GetCalendarEntries());
+            get { return _startTime; }
+            set
+            {
+                _startTime = value;
+            }
+        }
+        public DateTime EndTime
+        {
+            get { return _endTime; }
+            set
+            {
+                _endTime = value;
+            }
+        }
+
+        public async void ShowAll()
+        {
+            CalendarEntries.Clear();
+            _fullEntrieList = (await _calendarRepository.GetCalendarEntriesAsync()).ToList();
+            CalendarEntries.AddRange(_fullEntrieList);
             NotifyOfPropertyChange(() => CalendarEntries);
         }
         public void Search()
         {
-
+            var list = _fullEntrieList.Where(i => i.StartTime >= StartTime && i.EndTime <= EndTime.AddDays(1));
+            CalendarEntries.Clear();
+            CalendarEntries.AddRange(list);
         }
-        public bool CanEditEntrie(CalendarEntrie selectedEntrie) => SelectedEntrie != null;
-        public void EditEntrie(CalendarEntrie selectedEntrie) 
+        public void EditEntrie()
         {
-            _windowManager.ShowWindow(new EditCalendarViewModel(_selectedEntrie,this), null, null);
-        }
-        public bool CanDeleteEntrie(CalendarEntrie selectedEntrie) => SelectedEntrie != null;
-     
-        public void DeleteEntrie(CalendarEntrie selectedEntrie)
-        {
+            if (SelectedEntrie == null) return;
 
+            _windowManager.ShowWindow(new EditCalendarViewModel(SelectedEntrie, this), null, null);
         }
+
+        public async Task DeleteEntrieAsync()
+        {
+            if (SelectedEntrie == null) return;
+
+            await _calendarRepository.RemoveEntrieAsync(SelectedEntrie);
+            CalendarEntries.Remove(SelectedEntrie);
+        }
+
         public void AddEntrie()
         {
-            _windowManager.ShowWindow(new CreateCalendarViewModel(this), null, null);   
+            _windowManager.ShowWindow(new CreateCalendarViewModel(windowManager: _windowManager,onCreateCallback :this), null, null);
         }
 
-        public async Task OnCreate(CalendarEntrie calendarEntrie)
+        public async Task OnCreateAsync(CalendarEntrie calendarEntrie)
         {
             var item = await _calendarRepository.AddEntrieAsync(calendarEntrie);
             CalendarEntries.Add(item);
         }
 
-        public async Task OnChange(CalendarEntrie calendarEntrie)
+        public async Task OnChangeAsync(CalendarEntrie calendarEntrie)
         {
-           var item = await _calendarRepository.UpdateEntrieAsync(calendarEntrie);
+            var item = await _calendarRepository.UpdateEntrieAsync(calendarEntrie);
 
-           var oldValue = CalendarEntries.FirstOrDefault(x => x.Id == calendarEntrie.Id);
-           if (oldValue != null) oldValue = item;
-            
-           NotifyOfPropertyChange(() => CalendarEntries);
+            var oldValue = CalendarEntries.FirstOrDefault(x => x.Id == calendarEntrie.Id);
+            if (oldValue != null) oldValue = item;
+
+            NotifyOfPropertyChange(() => CalendarEntries);
         }
+
         public void Test()
         {
-
         }
     }
 }

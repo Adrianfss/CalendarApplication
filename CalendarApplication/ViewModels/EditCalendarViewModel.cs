@@ -27,7 +27,7 @@ namespace CalendarApplication.ViewModels
         }
         public void Save()
         {
-            _onChangeCallback.OnChange(_selectedEntrie);
+            _onChangeCallback.OnChangeAsync(_selectedEntrie);
             CloseWindow();
         }
         public void CloseWindow()

@@ -8,6 +8,6 @@ namespace CalendarApplication.CallbackInterface
 {
     public interface IOnCreateCallback
     {
-        Task OnCreate(CalendarEntrie calendarEntrie);
+        Task OnCreateAsync(CalendarEntrie calendarEntrie);
     }
 }

@@ -11,7 +11,6 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.IO;
 using CalendarApplication.DAL.Repositorys;
-using Microsoft.Extensions.Hosting;
 using CalendarApplication.ViewModels;
 
 namespace CalendarApplication

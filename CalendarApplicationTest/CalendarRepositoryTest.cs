@@ -20,10 +20,10 @@ namespace CalendarApplicationTest
            
         }
         [Fact]
-        public async Task AddEntrieToDb()
+        public async Task Add_Entrie_ToDb()
         {
 
-            using (var context = CreateInMemoryDB(CreateItems()))
+            using (var context = HelperClass.CreateInMemoryDB(HelperClass.CreateItems(), dbName: "AddDb"))
             {
                 var calendarRepository = new CalendarRepository(context);
                 Assert.Equal(3, (await calendarRepository.GetCalendarEntriesAsync()).Count());
@@ -31,10 +31,9 @@ namespace CalendarApplicationTest
 
         }
         [Fact]
-        public async Task RemoveEntrieFromDb()
+        public async Task Remove_EntrieFrom_Db()
         {
-
-            using (var context = CreateInMemoryDB(CreateItems()))
+            using (var context = HelperClass.CreateInMemoryDB(HelperClass.CreateItems(), dbName: "RemoveDb"))
             {
                 var calendarRepository = new CalendarRepository(context);
                 var entries = await calendarRepository.GetCalendarEntriesAsync();
@@ -46,10 +45,10 @@ namespace CalendarApplicationTest
 
         }
         [Fact]
-        public async Task UpdateEntrieFromDb()
+        public async Task Update_Entrie_FromDb()
         {
 
-            using (var context = CreateInMemoryDB(CreateItems()))
+            using (var context = HelperClass.CreateInMemoryDB(HelperClass.CreateItems(),dbName : "UpdateDB"))
             {
                 var calendarRepository = new CalendarRepository(context);
                 var entries = await calendarRepository.GetCalendarEntriesAsync();
@@ -63,28 +62,5 @@ namespace CalendarApplicationTest
             }
 
         }
-
-        private CalendarContext CreateInMemoryDB(List<CalendarEntrie> items,string dbName = "testDB") 
-        {
-            var options = new DbContextOptionsBuilder<CalendarContext>()
-               .UseInMemoryDatabase(databaseName: dbName)
-               .Options;
-
-            var context = new CalendarContext(options);
-            items.ForEach(n => context.calendarEntries.Add(n));
-            context.SaveChanges();
-            return context;
-        }
-        private List<CalendarEntrie> CreateItems()
-        {
-            return new List<CalendarEntrie>
-            {
-                new CalendarEntrie{Id = new Guid()},
-                new CalendarEntrie{Id = new Guid()},
-                new CalendarEntrie{Id = new Guid()},
-            };
-        }
-
-
     }
 }

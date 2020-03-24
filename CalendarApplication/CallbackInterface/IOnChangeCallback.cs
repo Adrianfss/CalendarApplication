@@ -8,6 +8,6 @@ namespace CalendarApplication.CallbackInterface
 {
     public interface IOnChangeCallback
     {
-        Task OnChange(CalendarEntrie calendarEntrie);  
+        Task OnChangeAsync(CalendarEntrie calendarEntrie);  
     }
 }

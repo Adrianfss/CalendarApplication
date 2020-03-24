@@ -6,9 +6,13 @@
         xmlns:local="clr-namespace:CalendarApplication.Views"
         mc:Ignorable="d"
         Title="ErrorView" Height="300" Width="400">
-    <Grid>
-        <Label Name="lblErrorText" Content="" Margin="49,30,50,85"/>
-        <Button Content="Ok" Click="Close_Window" Margin="50,86,50,19"/>
+    <Grid HorizontalAlignment="Right" Width="400">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="118*"/>
+            <RowDefinition Height="167*"/>
+        </Grid.RowDefinitions>
+        <Label Name="Message" Content="" HorizontalAlignment="Center" VerticalAlignment="Center"  Grid.Row="0"/>
+        <Button x:Name="CloseWindow" HorizontalAlignment="Center" VerticalAlignment="Center" Content="Ok"   Grid.Row="1"/>
 
     </Grid>
 </Window>
