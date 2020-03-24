@@ -11,7 +11,7 @@ namespace CalendarApplication.ViewModels
     /// window for creating new CalenderEntries
     /// uses OnCreatedCallBack for callback to mainWindow
     /// </summary>
-    class CreateCalendarViewModel : Screen
+     public class CreateCalendarViewModel : Screen
     {
         IOnCreateCallback _onCreateCallBack;
         IWindowManager _windowManager;

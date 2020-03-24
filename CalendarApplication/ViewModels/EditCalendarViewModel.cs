@@ -11,7 +11,7 @@ namespace CalendarApplication.ViewModels
     /// window for Updating new CalenderEntries
     /// uses OnUpdateCallBack for callback to mainWindow
     /// </summary>
-    class EditCalendarViewModel : Screen
+    public class EditCalendarViewModel : Screen
     {
         private readonly IOnChangeCallback _onChangeCallback;
         private CalendarEntrie _selectedEntrie;

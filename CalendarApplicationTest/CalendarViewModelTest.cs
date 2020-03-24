@@ -46,9 +46,7 @@ namespace CalendarApplicationTest
             CalendarRepository calendarRepository = new CalendarRepository(dbContext);
             CalendarViewModel viewModel = new CalendarViewModel(calendarRepository, null);
 
-
             var items = viewModel.SelectedEntrie;
-
             items.Description = "Changed";
 
             await viewModel.OnChangeAsync(items);
@@ -67,16 +65,6 @@ namespace CalendarApplicationTest
             Assert.Equal(3, viewModel.CalendarEntries.Count);
             await viewModel.DeleteEntrieAsync();
             Assert.Equal(2, viewModel.CalendarEntries.Count);
-        }
-        [Fact]
-        public async Task Try_To_Delete_When_List_Is_Empty_Throw_Exception()
-        {
-            var dbContext = HelperClass.CreateInMemoryDB(HelperClass.CreateItems());
-            CalendarRepository calendarRepository = new CalendarRepository(dbContext);
-            CalendarViewModel viewModel = new CalendarViewModel(calendarRepository, null);
-
-            await viewModel.DeleteEntrieAsync();
-            await Assert.ThrowsAsync<DbUpdateConcurrencyException>(() => viewModel.DeleteEntrieAsync());
         }
     }
 
